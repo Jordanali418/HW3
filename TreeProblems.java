@@ -1,5 +1,5 @@
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** Jordan Ali / 002 ***
  *
  * This java file contains several simple tree problems that need to be
  * codified. These routines  must use the TreeMap and TreeSet library
@@ -20,14 +20,16 @@ public class TreeProblems {
    */
   
   public static Set<Integer> different(Set<Integer> setA, Set<Integer> setB) {
+    Set<Integer> result = new TreeSet<>();
+    if (setA != null) result.addAll(setA);
+    if (setB != null){
+      for (Integer x : setB){
+        if (result.contains(x)) result.remove(x);
+        else result.add(x);
+      }
+    }
 
-    // INSERT CODE HERE - DO NOT FORGET TO PLACE YOUR NAME ABOVE
-    //
-    // This can be done numerous ways, but once such will only that
-    // *several* lines of code. Hint: create two temporary TreeSets and utilize the
-    // methods retainAll(), addAll(), and removeAll(). But in the end, get something to work.
-
-    return setA;
+    return result;
   }
 
 
@@ -39,10 +41,15 @@ public class TreeProblems {
    */
 
   public static void removeEven(Map<Integer, String> treeMap) {
-
-    // INSERT CODE HERE.
-
-    return;
+    /*
+    * remove all values from TreeMap if their keys are even numbers
+     */
+    if (treeMap == null || treeMap.isEmpty()) return;
+    Iterator<Integer> iterator = treeMap.keySet().iterator();
+    while (iterator.hasNext()){
+      Integer key = iterator.next();
+      if (key != null && key % 2 == 0) iterator.remove();
+    }
   }
 
 
@@ -54,10 +61,18 @@ public class TreeProblems {
    */
 
   public boolean treesEqual(Map<Integer, String> tree1,Map<Integer, String> tree2 ) {
-
-    // INSERT CODE HERE
-
-    return false;
+    // return true if both maps have same key->al pairs
+    if (tree1 == tree2) return true;
+    if (tree1 == null || tree2 == null) return false;
+    if (tree1.size() != tree2.size()) return false;
+    for (Map.Entry<Integer, String> e : tree1.entrySet()){
+      Integer key = e.getKey();
+      String val = e.getValue();
+      if (!tree2.containsKey(key)) return false;
+      String val2 = tree2.get(key);
+      if (val == null ? val2 != null : !val.equals(val2)) return false;
+    }
+    return true;
 
   }
 

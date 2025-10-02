@@ -1,6 +1,6 @@
 
 /*
- * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** Jordan Ali / 002 ***
  *
  * This java file is a Java object implementing simple AVL Tree.
  * You are to complete the deleteElement method.
@@ -342,25 +342,58 @@ class LUC_AVLTree {
      */
 
     private Node deleteElement(int value, Node node) {
-
         /*
-         * ADD CODE HERE
-         * 
-         * NOTE, that you should use the existing coded private methods
-         * in this file, which include:
-         *      - minValueNode,
-         *      - getMaxHeight,
-         *      - getHeight,
-         *      - getBalanceFactor,
-         *      - LLRotation
-         *      - RRRotation,
-         *      - LRRotation,
-         *      - RLRotation.
-         *
-         * To understand what each of these methods do, see the method prologues and
-         * code for each. You can also look at the method InsertElement, as it has do
-         * do many of the same things as this method.
+        * deletes a val from the AVL tree
+        * 4 cases
+        * 1. leaf node
+        * 2. node with left
+        * 3. node with right
+        * 4. node with both
+        * after deletion --> calculate heights of node
+        * if unbalanced apply correct AVL rotation
          */
+        if  (node == null){
+            return null;
+        }
+        if (value < node.value){
+            node.leftChild = deleteElement(value, node.leftChild);
+
+        } else if (value > node.value) {
+            node.rightChild = deleteElement(value, node.rightChild);
+
+        } else {
+            if (node.leftChild == null && node.rightChild == null){
+                return null;
+            } else if (node.rightChild == null) {
+                return node.leftChild;
+
+            } else if (node.leftChild == null) {
+                return node.rightChild;
+            } else {
+                Node successorNode = minValueNode(node.rightChild);
+                node.value = successorNode.value;
+                node.rightChild = deleteElement(successorNode.value, node.rightChild);
+            }
+
+
+        }
+        node.height = getMaxHeight(getHeight(node.leftChild), getHeight(node.rightChild) + 1);
+        int balFac = getBalanceFactor(node);
+        if (balFac > 1){
+            if (getBalanceFactor(node.leftChild) >= 0){
+                node = LLRotation(node);
+            }else {
+                node = LRRotation(node);
+            }
+        } else if (balFac < -1) {
+            if (getBalanceFactor(node.rightChild) <= 0){
+                node = RRRotation(node);
+            } else {
+                node = RLRotation(node);
+            }
+
+        }
+
 
         return node;
     }
